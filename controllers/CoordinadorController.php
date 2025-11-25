@@ -58,11 +58,8 @@ public function actionDashboard()
 
 public function actionSolicitudes()
 {
-    $searchModel = new \app\models\SolicitudBecaSearch();
-    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
     $query = SolicitudBeca::find()
-        ->joinWith('beca')       // para poder filtrar y ordenar por nombre de beca
-        ->with('estudiante');    // evitar consultas adicionales para estudiante
+        ->with('estudiante');  // Cargar estudiante para evitar N+1 queries
 
     $request = Yii::$app->request;
 
@@ -70,12 +67,6 @@ public function actionSolicitudes()
     $estatus = $request->get('estatus', null);
     if ($estatus !== null) {
         $query->andWhere(['estatus' => $estatus]);
-    }
-
-    // Filtrar por nombre de beca si viene en GET
-    $becaNombre = $request->get('becaNombre', null);
-    if ($becaNombre !== null) {
-        $query->andFilterWhere(['like', 'beca.nombre', $becaNombre]);
     }
 
     $dataProvider = new ActiveDataProvider([
@@ -87,10 +78,7 @@ public function actionSolicitudes()
                 'fecha_solicitud',
                 'estatus',
                 'estudiante_id',
-                'becaNombre' => [
-                    'asc' => ['beca.nombre' => SORT_ASC],
-                    'desc' => ['beca.nombre' => SORT_DESC],
-                ],
+                'beca_id',
             ],
         ],
     ]);
@@ -98,23 +86,43 @@ public function actionSolicitudes()
     return $this->render('solicitudes', [
         'dataProvider' => $dataProvider,
         'estatus' => $estatus,
-        'becaNombre' => $becaNombre,
-        'searchModel' => $searchModel,
-        'dataProvider' => $dataProvider,
     ]);
 }
 
 
-public function actionAprobar($id)
-{
-    $solicitud = SolicitudBeca::findOne($id);
-    if ($solicitud) {
-        $solicitud->estatus = 'Aprobada';
-        $solicitud->save(false);
-        Yii::$app->session->setFlash('success', 'Solicitud aprobada correctamente.');
+    public function actionVerSolicitud($id)
+    {
+        $solicitud = SolicitudBeca::findOne($id);
+        if (!$solicitud) {
+            throw new \yii\web\NotFoundHttpException('La solicitud no existe.');
+        }
+
+        return $this->render('ver-solicitud', [
+            'solicitud' => $solicitud,
+        ]);
     }
-    return $this->redirect(['solicitudes']);
-}
+
+    public function actionAprobar($id)
+    {
+        $solicitud = SolicitudBeca::findOne($id);
+        if ($solicitud) {
+            $solicitud->estatus = 'Aprobada';
+            $solicitud->save(false);
+            
+            // Enviar notificación automática al estudiante
+            $notificacion = new \app\models\Notificacion();
+            $notificacion->solicitud_id = $id;
+            $notificacion->usuario_id = $solicitud->estudiante_id;
+            $notificacion->mensaje = "✓ ¡Tu solicitud de beca ha sido APROBADA! Puedes ver los detalles en 'Mis Solicitudes'.";
+            $notificacion->tipo = 'aprobacion';
+            $notificacion->fecha_creacion = date('Y-m-d H:i:s');
+            $notificacion->leida = 0;
+            $notificacion->save(false);
+            
+            Yii::$app->session->setFlash('success', '✓ Solicitud aprobada y notificación enviada al estudiante.');
+        }
+        return $this->redirect(['solicitudes']);
+    }
 
     public function actionRechazar($id)
     {
@@ -122,9 +130,49 @@ public function actionAprobar($id)
         if ($solicitud) {
             $solicitud->estatus = 'Rechazada';
             $solicitud->save(false);
-            Yii::$app->session->setFlash('warning', 'Solicitud rechazada.');
+            
+            // Enviar notificación automática al estudiante
+            $notificacion = new \app\models\Notificacion();
+            $notificacion->solicitud_id = $id;
+            $notificacion->usuario_id = $solicitud->estudiante_id;
+            $notificacion->mensaje = "⚠ Tu solicitud de beca ha sido RECHAZADA. Puedes ver más detalles en 'Mis Solicitudes'.";
+            $notificacion->tipo = 'rechazo';
+            $notificacion->fecha_creacion = date('Y-m-d H:i:s');
+            $notificacion->leida = 0;
+            $notificacion->save(false);
+            
+            Yii::$app->session->setFlash('warning', '⚠ Solicitud rechazada y notificación enviada.');
         }
         return $this->redirect(['solicitudes']);
+    }
+
+    public function actionEnviarNotificacion($id)
+    {
+        $solicitud = SolicitudBeca::findOne($id);
+        
+        if (!$solicitud) {
+            throw new \yii\web\NotFoundHttpException('La solicitud no existe.');
+        }
+
+        $model = new \app\models\Notificacion();
+
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
+            $model->solicitud_id = $id;
+            $model->usuario_id = $solicitud->estudiante_id;
+            $model->tipo = 'mensaje_coordinador';
+            $model->fecha_creacion = date('Y-m-d H:i:s');
+            $model->leida = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', '✓ Notificación enviada al estudiante correctamente.');
+                return $this->redirect(['solicitudes']);
+            }
+        }
+
+        return $this->render('enviar-notificacion', [
+            'solicitud' => $solicitud,
+            'model' => $model,
+        ]);
     }
 
 public function actionVerDocumentos($id)

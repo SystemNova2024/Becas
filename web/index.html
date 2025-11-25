@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mi App PWA - Yii2</title>
+
+<!-- Manifiesto -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- Estilos -->
+<link rel="stylesheet" href="/css/app.css">
+
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="app-shell">
+    <header>
+        <h1>Mi App PWA</h1>
+    </header>
+
+    <nav id="nav"></nav>
+
+    <main id="content">Cargando…</main>
+
+    <!-- 🔹 Botón de instalación PWA -->
+    <button id="btnInstall" class="hidden">Instalar Aplicación</button>
+
+    <footer>© Mi Empresa</footer>
+</div>
+
+<!-- tu app.js debe cargarse solo UNA VEZ -->
+<script src="/js/app.js" defer></script>
+
+<!-- Registrar el Service Worker -->
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+    .then(reg => console.log('SW registrado', reg))
+    .catch(err => console.warn('Error registrando SW', err));
+}
+</script>
+
+</body>
+</html>

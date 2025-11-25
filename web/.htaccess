@@ -1,3 +1,9 @@
+
+# PWA exclusions
+RewriteRule ^service-worker\.js$ - [L]
+RewriteRule ^manifest\.json$ - [L]
+RewriteRule ^icons/ - [L]
+
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f

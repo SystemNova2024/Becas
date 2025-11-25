@@ -11,11 +11,11 @@ use yii\helpers\Html;
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100 shadow-sm border-0 rounded-4 hover-card">
                         <div class="card-body d-flex flex-column">
-                            <h4 class="card-title fw-bold"><?= Html::encode($beca->nombre) ?></h4>
-                            <p class="card-text text-muted flex-fill"><?= nl2br(Html::encode($beca->descripcion)) ?></p>
-                            <p class="mb-3"><strong>Vigencia:</strong> <?= Html::encode($beca->fecha_inicio) ?> → <?= Html::encode($beca->fecha_fin) ?></p>
+                            <h4 class="card-title fw-bold"><?= Html::encode($beca->nombre ?? 'Sin nombre') ?></h4>
+                            <p class="card-text text-muted flex-fill"><?= nl2br(Html::encode($beca->descripcion ?? 'Sin descripción')) ?></p>
+                            <p class="mb-3"><strong>Vigencia:</strong> <?= Html::encode($beca->fecha_inicio ?? 'N/A') ?> → <?= Html::encode($beca->fecha_fin ?? 'N/A') ?></p>
 
-                            <?php if ($beca->archivo_convocatoria): ?>
+                            <?php if (!empty($beca->archivo_convocatoria)): ?>
                                 <p>
                                     <?= Html::a('📎 Ver convocatoria', Yii::getAlias('@web') . '/' . $beca->archivo_convocatoria, [
                                         'target' => '_blank',

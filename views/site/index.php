@@ -1,42 +1,196 @@
 <?php
+/**
+ * Vista principal – Sistema de Becas UTH
+ * @var yii\web\View $this
+ */
 
-/** @var yii\web\View $this */
-
-$this->title = 'Sistema de Becas';
+$this->title = 'Sistema de Becas - UTH';
 ?>
-<div class="site-index">
 
-    <div class="jumbotron text-center bg-transparent mt-5 mb-5">
-        <h1 class="display-1 becas-title" style="color: #4A0000; font-weight: 900; text-shadow: 3px 3px 6px rgba(0,0,0,0.4), 0 0 20px rgba(74,0,0,0.3); font-size: 5rem; letter-spacing: 8px; background: linear-gradient(45deg, #4A0000, #8B0000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">BECAS</h1>
-
-        <p class="lead" style="font-size: 1.8rem; color: #000000; margin-top: 2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); font-weight: 600;">Sistema de Consulta y Gestión de Becas</p>
-
-        <div class="mt-5">
-            <a class="btn btn-lg consultar-btn" href="<?= \yii\helpers\Url::to(['site/becas']) ?>" style="background: linear-gradient(45deg, #4A0000, #8B0000); color: #FFF8DC; padding: 18px 50px; font-size: 1.3rem; border-radius: 50px; box-shadow: 0 6px 15px rgba(74,0,0,0.4); transition: all 0.3s ease; border: 2px solid #FFF8DC;">
-                <i class="fas fa-search" style="margin-right: 12px;"></i>
-                Consultar Becas
+<!-- Hero / CTA -->
+<section class="row justify-content-center mt-5">
+    <div class="col-lg-8">
+        <div class="hero-card text-center">
+            <h3 class="hero-title">¿Listo para comenzar?</h3>
+            <p class="hero-subtitle">
+                Descubre todas las oportunidades de beca disponibles para tu carrera profesional
+            </p>
+            <a href="<?= \yii\helpers\Url::to(['site/becas']) ?>"
+               class="btn btn-primary btn-lg text-uppercase fw-semibold">
+                Explorar becas
             </a>
         </div>
     </div>
+</section>
 
-    <div class="body-content">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 text-center">
-                <div class="card info-card" style="border: none; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border-radius: 20px; background: linear-gradient(135deg, #FFF8DC, #F5F5DC);">
-                    <div class="card-body" style="padding: 4rem;">
-                        <h2 style="color: #4A0000; margin-bottom: 2rem; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.2);">✨ Descubre Oportunidades Únicas en la Universidad Tecnológica de Huejotzingo ✨</h2>
-                        <p class="lead" style="color: #4A0000; line-height: 2; font-size: 1.3rem; font-weight: 500;">
-                            <strong>Explora</strong> nuestro catálogo completo de becas disponibles para estudiantes UTH<br>
-                            <strong>Encuentra</strong> la oportunidad perfecta para tu desarrollo académico dentro de la UTH<br>
-                            <strong>Impulsa</strong> tu futuro con las mejores opciones educativas que ofrece la Universidad Tecnológica de Huejotzingo
-                        </p>
-                        <div class="mt-4">
-                            <span style="color: #8B0000; font-size: 1.1rem; font-weight: 600;">¡Tu éxito académico comienza aquí!</span>
-                        </div>
+<!-- Estadísticas -->
+<section class="row justify-content-center my-5">
+    <div class="col-lg-8">
+        <div class="row text-center g-3">
+            <?php foreach ([
+                ['15+', 'Becas activas'],
+                ['500+', 'Estudiantes'],
+                ['95%', 'Satisfacción'],
+                ['24/7', 'Disponible']
+            ] as [$num, $label]): ?>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="stat-number"><?= $num ?></div>
+                        <div class="stat-label"><?= $label ?></div>
                     </div>
                 </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
+</section>
 
-</div>
+<!-- Características -->
+<section class="mb-5">
+    <h2 class="section-title">
+        <i class="fas fa-rocket me-2 accent"></i>Características principales
+    </h2>
+
+    <div class="row g-4">
+        <?php
+        $features = [
+            ['bolt', 'Acceso rápido', 'Consulta inmediata de todas las becas disponibles con filtros avanzados'],
+            ['shield-alt', 'Seguro y confiable', 'Sistema protegido con las mejores prácticas de seguridad informática'],
+            ['sync-alt', 'Actualización en tiempo real', 'Información siempre actualizada de convocatorias y resultados']
+        ];
+        foreach ($features as [$icon, $title, $text]): ?>
+            <div class="col-lg-4">
+                <div class="feature-card h-100">
+                    <div class="feature-icon">
+                        <i class="fas fa-<?= $icon ?> fa-2x text-white"></i>
+                    </div>
+                    <h5 class="feature-title"><?= $title ?></h5>
+                    <p class="feature-text"><?= $text ?></p>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</section>
+
+<!-- Tipos de beca -->
+<section class="mb-5">
+    <h2 class="section-title">
+        <i class="fas fa-award me-2 accent"></i>Tipos de becas disponibles
+    </h2>
+
+    <div class="row g-4">
+        <?php
+        $types = [
+            ['brain', 'Excelencia académica', 'Para estudiantes con promedio destacado'],
+            ['hands-helping', 'Apoyo social', 'Becas para estudiantes en situación vulnerable'],
+            ['briefcase', 'Becas laborales', 'Trabajo y estudio dentro de la institución'],
+            ['globe-americas', 'Internacionales', 'Programas de intercambio académico']
+        ];
+        foreach ($types as [$icon, $title, $text]): ?>
+            <div class="col-lg-3 col-md-6">
+                <div class="type-card h-100">
+                    <div class="type-icon">
+                        <i class="fas fa-<?= $icon ?> fa-2x text-white"></i>
+                    </div>
+                    <h5 class="type-title"><?= $title ?></h5>
+                    <p class="type-text"><?= $text ?></p>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</section>
+
+<!-- Estilos extra (pueden ir en un archivo .css) -->
+<style>
+:root {
+    --color-primary: #0056b3;
+    --color-accent: #00c9a7;
+    --color-light: #f8f9fa;
+    --text-primary: #343a40;
+    --shadow: 0 8px 24px rgba(0, 0, 0, .08);
+}
+
+.hero-card {
+    background: linear-gradient(135deg, var(--color-light), #fff);
+    padding: 4rem 3rem;
+    border-radius: 20px;
+    border: 2px solid var(--color-accent);
+    box-shadow: var(--shadow);
+}
+
+.hero-title {
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: var(--color-light);
+    border-radius: 15px;
+    padding: 2rem 1rem;
+}
+
+.stat-number {
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+
+.stat-label {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.section-title {
+    text-align: center;
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 2.2rem;
+    margin-bottom: 3rem;
+}
+
+.accent { color: var(--color-accent); }
+
+.feature-card,
+.type-card {
+    text-align: center;
+    border-radius: 15px;
+    padding: 2.5rem 1.5rem;
+    background: #fff;
+    box-shadow: var(--shadow);
+}
+
+.feature-icon,
+.type-icon {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.type-icon { width: 70px; height: 70px; border-radius: 15px; }
+
+.feature-title,
+.type-title {
+    color: var(--color-primary);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.feature-text,
+.type-text {
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin: 0;
+}
+</style>

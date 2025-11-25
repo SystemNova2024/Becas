@@ -120,9 +120,12 @@ $this->beginPage();
     <?= Html::a('<i class="bi bi-folder-check"></i> Solicitudes', Url::to(['coordinador/solicitudes']), ['class'=>'nav-link']) ?>
     <?= Html::a('<i class="bi bi-award"></i> Becas', Url::to(['coordinador/becas']), ['class'=>'nav-link']) ?>
     <?= Html::a('<i class="bi bi-people"></i> Soporte', Url::to(['coordinador/soporte']), ['class'=>'nav-link']) ?>
-    <?= Html::a('<i class="bi bi-box-arrow-right"></i> Cerrar Sesión', Url::to(['coordinador/logout']), [
-        'class'=>'nav-link', 'data-method'=>'post'
-    ]) ?>
+    <form method="post" action="<?= Url::to(['site/logout']) ?>" style="display: inline;">
+        <input type="hidden" name="<?= Yii::$app->request->csrfParam ?>" value="<?= Yii::$app->request->csrfToken ?>" />
+        <button type="submit" class="btn btn-link nav-link p-0 border-0 bg-transparent" style="width: 100%; text-align: left; padding: 10px 15px !important; color: #495057; text-decoration: none;" onclick="return confirm('¿Estás seguro de que quieres cerrar sesión?')">
+            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+        </button>
+    </form>
   </nav>
 
   <!-- Contenido -->

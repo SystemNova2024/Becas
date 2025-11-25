@@ -13,11 +13,7 @@ class RbacController extends Controller
 
         $roles = [
             1 => 'Coordinador de becas',
-            2 => 'Departamento de servicios escolares',
             3 => 'Estudiante',
-            4 => 'Administrador del sistema',
-            5 => 'Tutor o Docente evaluador',
-            6 => 'Contador o área financiera',
         ];
 
         foreach ($roles as $userId => $roleName) {
@@ -42,4 +38,5 @@ class RbacController extends Controller
 
         echo "✔ RBAC inicializado correctamente.\n";
     }
+
 }

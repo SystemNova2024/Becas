@@ -22,30 +22,17 @@ use yii\helpers\Html;
         </a>
     </div>
 
-    <!-- Soporte -->
-    <div class="col-md-6 col-lg-3 d-flex justify-content-center">
-        <a href="<?= Yii::$app->urlManager->createUrl(['coordinador/soporte']) ?>" class="text-decoration-none w-100" style="max-width: 320px;">
-            <div class="card shadow-sm border-0 rounded-4 hover-card text-center p-4">
-                <div class="icon-container mb-3">
-                    <i class="bi bi-people-fill text-warning fs-1"></i>
-                </div>
-                <h5 class="fw-bold mb-2">Soporte</h5>
-                <p class="text-muted mb-3">Contacta al equipo de soporte y resuelve incidencias.</p>
-                <span class="btn btn-outline-warning btn-sm rounded-pill px-4">Ir a Soporte</span>
-            </div>
-        </a>
-    </div>
 
     <!-- Gestión de Becas -->
-    <div class="col-md-6 col-lg-3 d-flex justify-content-center">
+    <div class="col-md-6 col-lg-4 d-flex justify-content-center">
         <a href="<?= Yii::$app->urlManager->createUrl(['coordinador/becas']) ?>" class="text-decoration-none w-100" style="max-width: 320px;">
             <div class="card shadow-sm border-0 rounded-4 hover-card text-center p-4">
                 <div class="icon-container mb-3">
-                    <i class="bi bi-award-fill text-danger fs-1"></i>
+                    <i class="bi bi-award-fill text-success fs-1"></i>
                 </div>
                 <h5 class="fw-bold mb-2">Gestión de Becas</h5>
-                <p class="text-muted mb-3">Sube y administra las becas disponibles de manera efectiva.</p>
-                <span class="btn btn-outline-danger btn-sm rounded-pill px-4">Ir a Becas</span>
+                <p class="text-muted mb-3">Crea, edita y administra las becas disponibles para los estudiantes.</p>
+                <span class="btn btn-outline-success btn-sm rounded-pill px-4">Gestionar Becas</span>
             </div>
         </a>
     </div>

@@ -18,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
                 'tableOptions' => ['class' => 'table table-hover align-middle'],
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
@@ -30,12 +29,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     ],
                     [
-                        'attribute' => 'becaNombre',
+                        'attribute' => 'beca_id',
                         'label' => 'Beca',
                         'value' => function ($model) {
-                            return $model->beca->nombre ?? '(Sin beca)';
+                            $becas = [
+                                1 => 'Beca Alimenticia',
+                                2 => 'Beca de Excelencia',
+                                3 => 'Beca Académica',
+                                4 => 'Beca Socioeconómica',
+                            ];
+                            return $becas[$model->beca_id] ?? "Beca ID: {$model->beca_id}";
                         },
-                        'filter' => Html::activeTextInput($searchModel, 'becaNombre', ['class' => 'form-control', 'placeholder' => 'Buscar por beca']),
                     ],
                     [
                         'attribute' => 'fecha_solicitud',
@@ -52,46 +56,65 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],
                     [
+                        'label' => 'Progreso',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            $color = match($model->estatus) {
+                                'aprobada' => 'success',
+                                'rechazada' => 'danger',
+                                'en_revision' => 'warning',
+                                default => 'info',
+                            };
+                            $estatus = ucfirst(str_replace('_', ' ', $model->estatus));
+                            return "<span class='badge bg-{$color}'>{$estatus}</span>";
+                        }
+                    ],
+                    [
                         'class' => 'yii\grid\ActionColumn',
-                        'template' => '{aprobar} {rechazar}',
+                        'template' => '{ver} {aprobar} {rechazar} {notificar}',
                         'header' => 'Acciones',
-                        'controller' => 'Coordinador',
                         'buttons' => [
+                            'ver' => function ($url, $model) {
+                                return Html::a(
+                                    '<i class="bi bi-eye"></i> Ver',
+                                    ['coordinador/ver-solicitud', 'id' => $model->id],
+                                    ['class' => 'btn btn-sm btn-outline-primary me-1']
+                                );
+                            },
                             'aprobar' => function ($url, $model) {
                                 if ($model->estatus === 'pendiente') {
-                                    return Html::a('<i class="bi bi-check-circle-fill"></i>', ['aprobar', 'id' => $model->id], [
-                                        'title' => 'Aprobar',
-                                        'class' => 'text-success me-2',
-                                        'data-confirm' => '¿Seguro que deseas aprobar esta solicitud?'
-                                    ]);
+                                    return Html::a(
+                                        '<i class="bi bi-check-circle"></i> Aprobar',
+                                        ['aprobar', 'id' => $model->id],
+                                        [
+                                            'class' => 'btn btn-sm btn-success me-1',
+                                            'data-confirm' => '¿Aprobar esta solicitud?'
+                                        ]
+                                    );
                                 }
                                 return '';
                             },
                             'rechazar' => function ($url, $model) {
-                                if ($model->estatus === 'pendiente') {
-                                    return Html::a('<i class="bi bi-x-circle-fill"></i>', ['rechazar', 'id' => $model->id], [
-                                        'title' => 'Rechazar',
-                                        'class' => 'text-danger',
-                                        'data-confirm' => '¿Seguro que deseas rechazar esta solicitud?'
-                                    ]);
+                                if ($model->estatus === 'pendiente' || $model->estatus === 'en_revision') {
+                                    return Html::a(
+                                        '<i class="bi bi-x-circle"></i> Rechazar',
+                                        ['rechazar', 'id' => $model->id],
+                                        [
+                                            'class' => 'btn btn-sm btn-danger me-1',
+                                            'data-confirm' => '¿Rechazar esta solicitud?'
+                                        ]
+                                    );
                                 }
                                 return '';
                             },
+                            'notificar' => function ($url, $model) {
+                                return Html::a(
+                                    '<i class="bi bi-bell"></i> Notificar',
+                                    ['coordinador/enviar-notificacion', 'id' => $model->id],
+                                    ['class' => 'btn btn-sm btn-outline-warning']
+                                );
+                            },
                         ],
-                    ],
-                    [
-                        'label' => 'Documentos',
-                        'format' => 'raw',
-                        'value' => function ($model) {
-                            return Html::a(
-                                '<i class="bi bi-file-earmark-text"></i> Ver',
-                                ['coordinador/ver-documentos', 'id' => $model->id],
-                                [
-                                    'class' => 'btn btn-outline-secondary btn-sm rounded-pill shadow-sm',
-                                    'title' => 'Ver documentos de la solicitud',
-                                ]
-                            );
-                        }
                     ],
                 ],
             ]); ?>

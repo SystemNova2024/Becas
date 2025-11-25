@@ -118,6 +118,7 @@ $this->beginPage();
     <?= Html::a('Mis Solicitudes', ['/estudiante/solicitudes'], ['class' => 'nav-link']) ?>
     <?= Html::a('Becas', ['/estudiante/becas'], ['class' => 'nav-link']) ?>
     <?= Html::a('Becas Institucionales', ['/estudiante/becas-institucionales'], ['class' => 'nav-link']) ?>
+    <?= Html::a('Notificaciones', ['/estudiante/notificaciones'], ['class' => 'nav-link']) ?>
     <?= Html::a('Cerrar Sesión', ['/estudiante/logout'], ['class' => 'nav-link','data-method'=>'post']) ?>
   </nav>
 </div>

@@ -5,6 +5,11 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 
+/**
+ * Modelo para la tabla becas
+ * NOTA: Este modelo puede no tener una tabla real en la base de datos,
+ * ya que las becas parecen estar hardcodeadas en las vistas
+ */
 class Beca extends ActiveRecord
 {
     public static function tableName()
@@ -15,34 +20,21 @@ class Beca extends ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'descripcion', 'requisitos', 'procedimiento', 'fecha_inicio', 'fecha_fin'], 'required'],
-            [['descripcion', 'requisitos', 'procedimiento'], 'string'],
-            [['fecha_inicio', 'fecha_fin'], 'safe'],
-            [['nombre'], 'string', 'max' => 255],
-            [['archivo_convocatoria'], 'string', 'max' => 255],
-            [['requiere_justificacion', 'requiere_documentos'], 'boolean'],
+            [['id'], 'integer'],
+            [['nombre', 'descripcion', 'fecha_inicio', 'fecha_fin'], 'string'],
         ];
     }
 
     public function attributeLabels()
     {
         return [
+            'id' => 'ID',
             'nombre' => 'Nombre',
             'descripcion' => 'Descripción',
-            'requisitos' => 'Requisitos',
-            'procedimiento' => 'Procedimiento',
             'fecha_inicio' => 'Fecha de Inicio',
             'fecha_fin' => 'Fecha de Fin',
             'archivo_convocatoria' => 'Archivo de Convocatoria',
-            'requiere_justificacion' => 'Requiere Justificación',
-            'requiere_documentos' => 'Requiere Documentos',
         ];
     }
-
-    // 🔹 Getter para poder usar $beca->titulo aunque en la BD se llame "nombre"
-    public function getTitulo()
-    {
-        return $this->nombre;
-    }
-
 }
+

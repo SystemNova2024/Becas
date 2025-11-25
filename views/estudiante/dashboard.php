@@ -91,13 +91,12 @@ $fotoSrc = Yii::getAlias('@web/uploads/imagenes/fer.jpeg');
     <!-- Perfil usuario -->
     <div class="col-lg-4">
       <div class="card shadow-sm rounded-4 border-0 py-5 px-4 text-center">
-        <img src="<?= Html::encode($fotoSrc) ?>"
-             class="rounded-circle mb-4 mx-auto d-block border border-2"
-             alt="Foto perfil de <?= Html::encode($user->nombre_completo) ?>"
-             style="width: 140px; height: 140px; object-fit: cover; transition: box-shadow 0.3s ease;">
-        <h5 class="fw-bold mb-2"><?= Html::encode($user->nombre_completo) ?></h5>
+        <div class="rounded-circle mb-4 mx-auto d-block border border-2 d-flex align-items-center justify-content-center bg-primary text-white"
+             style="width: 140px; height: 140px; font-size: 3rem;">
+          👤
+        </div>
+        <h5 class="fw-bold mb-2"><?= Html::encode($user->nombre_completo ?? $user->username) ?></h5>
         <p class="text-muted mb-4 fst-italic">Estudiante</p>
-        <?= Html::a('Editar Perfil', ['estudiante/perfil'], ['class' => 'btn btn-outline-primary px-4 rounded-pill']) ?>
       </div>
     </div>
 

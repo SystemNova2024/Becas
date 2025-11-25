@@ -20,12 +20,8 @@ use yii\widgets\ActiveForm;
    <?= $form->field($model, 'password')->passwordInput() ?>
 
     <?= $form->field($model, 'rol_id')->dropDownList([
-        1 => 'Administrador del sistema',
-        2 => 'Coordinador de becas',
+        1 => 'Coordinador de becas',
         3 => 'Estudiante',
-        4 => 'Departamento de servicios escolares',
-        5 => 'Tutor o Docente evaluador',
-        6 => 'Contador o área financiera',
     ], ['prompt' => 'Selecciona un rol']) ?>
 
     <?= $form->field($model, 'activo')->dropDownList([1 => 'Activo', 0 => 'Inactivo']) ?>

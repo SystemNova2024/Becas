@@ -15,52 +15,21 @@ $this->params['breadcrumbs'][] = $this->title;
             </h2>
 
             <?php $form = ActiveForm::begin([
-                'options' => ['enctype' => 'multipart/form-data', 'class' => 'needs-validation', 'novalidate' => true],
-                'fieldConfig' => [
-                    'template' => '<div class="form-floating mb-4">{input}{label}{error}</div>',
-                    'labelOptions' => ['class' => 'form-label text-secondary'],
-                    'inputOptions' => ['class' => 'form-control rounded-3 shadow-sm'],
-                    'errorOptions' => ['class' => 'text-danger small mt-1'],
-                ],
+                'class' => 'needs-validation',
             ]); ?>
 
-            <?php if ($solicitud->hasErrors()): ?>
-                <div class="alert alert-danger shadow-sm rounded-3">
-                    <ul class="mb-0">
-                        <?php foreach ($solicitud->getErrors() as $errores): ?>
-                            <?php foreach ($errores as $error): ?>
-                                <li><?= Html::encode($error) ?></li>
-                            <?php endforeach; ?>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($beca->requiere_justificacion): ?>
-                <?= $form->field($solicitud, 'justificacion')->textarea([
-                    'rows' => 4,
-                    'placeholder' => 'Explica brevemente por qué necesitas esta beca...',
-                    'class' => 'form-control rounded-3 shadow-sm',
-                    'style' => 'height: 120px;',
-                ])->label('Justificación') ?>
-            <?php endif; ?>
-
-            <!-- NUEVO APARTADO FIJO PARA SUBIR DOCUMENTACIÓN -->
-            <div class="mt-5">
-                <h4 class="mb-3"><i class="bi bi-paperclip me-2"></i> Subir Documentación</h4>
-                <p class="text-muted small">Adjunta tus documentos en formato PDF o imagen (JPG, JPEG, PNG).</p>
-
-                <?= $form->field($solicitud, 'archivo[]')->fileInput([
-                    'multiple' => true,
-                    'accept' => '.pdf,.jpg,.jpeg,.png',
-                    'class' => 'form-control rounded-3 shadow-sm'
-                ])->label(false) ?>
+            <!-- Confirmación de beca -->
+            <div class="alert alert-info shadow-sm rounded-3 mb-4">
+                <h5 class="mb-2">📋 Confirmar Solicitud</h5>
+                <p class="mb-0">Estás a punto de solicitar: <strong><?= Html::encode($beca->nombre) ?></strong></p>
             </div>
-            <!-- FIN NUEVO APARTADO -->
 
-            <div class="d-flex justify-content-center mt-4">
-                <?= Html::submitButton('<i class="bi bi-send-fill me-2"></i>Enviar Solicitud', [
-                    'class' => 'btn btn-outline-primary btn-lg rounded-pill px-5 py-2 shadow-sm'
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <?= Html::submitButton('✓ Solicitar Beca', [
+                    'class' => 'btn btn-success btn-lg rounded-pill px-5 py-2 shadow-sm'
+                ]) ?>
+                <?= Html::a('Cancelar', ['/estudiante/becas'], [
+                    'class' => 'btn btn-outline-secondary btn-lg rounded-pill px-5 py-2'
                 ]) ?>
             </div>
 

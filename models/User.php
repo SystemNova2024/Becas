@@ -41,7 +41,7 @@ public function rules()
 
     public function getAuthAssignments()
     {
-        return $this->hasMany(\app\models\AuthAssignment::class, ['user_id' => 'id']);
+        return $this->hasMany(\yii\rbac\Assignment::class, ['user_id' => 'id']);
     }
 
     public function assignRole($rolName)
